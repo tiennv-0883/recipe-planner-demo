@@ -12,7 +12,7 @@ import { createSupabaseBrowserClient } from '@/src/lib/supabase/client'
 export default function EditRecipePage() {
   const params = useParams()
   const router = useRouter()
-  const { state, dispatch } = useRecipes()
+  const { state, apiDispatch } = useRecipes()
   const { user } = useAuth()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -65,7 +65,9 @@ export default function EditRecipePage() {
         steps: recipeValues.steps.map((step, i) => ({ ...step, order: i + 1 })),
       })
 
-      dispatch({ type: 'UPDATE', payload: updated })
+      // apiDispatch calls PUT /api/recipes/[id] which persists photoUrl to Supabase,
+      // then updates local state with the DB response.
+      await apiDispatch({ type: 'UPDATE', payload: updated })
       router.push(`/recipes/${recipe!.id}`)
     } finally {
       setIsSubmitting(false)

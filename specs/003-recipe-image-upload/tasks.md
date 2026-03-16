@@ -165,3 +165,13 @@ Task T121: "Update src/app/recipes/[id]/edit/page.tsx"
 - **Seed data fix is URL-only** — no uploads to Storage for seed images; Unsplash CDN URLs work directly in `<img>` tags without authentication
 - **Upsert strategy** — using deterministic path `{userId}/{recipeId}.ext` with `upsert: true` means editing a recipe automatically overwrites the old image without cleanup logic
 - **All existing 90 unit tests must remain green** — `imageValidation.ts` is a new pure function with no side effects on existing tests
+
+---
+
+## Bug Fixes
+
+- [X] BUG-009 `new/page.tsx` and `edit/page.tsx` used local `dispatch` instead of calling the REST API — `photo_url` was uploaded to Storage but **never written to Supabase**. After F5, the API returned the old `photo_url` value.
+  - **Root cause**: T120/T121 called `dispatch({ type: 'ADD' / 'UPDATE' })` (local reducer only), bypassing `POST /api/recipes` and `PUT /api/recipes/[id]`.
+  - **Fix `edit/page.tsx`**: replaced `dispatch` with `apiDispatch({ type: 'UPDATE' })` — this calls `PUT /api/recipes/[id]`, which maps `photoUrl → photo_url` via `toDbRecipeInsert()` and persists to Supabase, then updates local state with the DB response.
+  - **Fix `new/page.tsx`**: redesigned to a 3-step flow: (1) `POST /api/recipes` to get the DB-assigned UUID, (2) upload image to Storage using that UUID as path, (3) `PUT /api/recipes/{id}` to write `photoUrl`, then `dispatch` ADD with the final record.
+  - **Files changed**: `src/app/recipes/new/page.tsx`, `src/app/recipes/[id]/edit/page.tsx`

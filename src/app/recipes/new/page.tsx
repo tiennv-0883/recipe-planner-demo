@@ -6,7 +6,6 @@ import MainLayout from '@/src/components/layout/MainLayout'
 import RecipeForm, { type RecipeFormValues } from '@/src/components/recipes/RecipeForm'
 import { useRecipes } from '@/src/context/RecipeContext'
 import { useAuth } from '@/src/context/AuthContext'
-import { createRecipe } from '@/src/services/recipes'
 import { createSupabaseBrowserClient } from '@/src/lib/supabase/client'
 
 export default function NewRecipePage() {
@@ -20,21 +19,28 @@ export default function NewRecipePage() {
     try {
       const { imageFile, ...recipeValues } = values
 
-      // Build the Recipe entity (generates local id + timestamps)
-      const recipe = createRecipe({
-        ...recipeValues,
-        ingredients: recipeValues.ingredients.map((ing, i) => ({
-          ...ing,
-          id: `ing-${Date.now()}-${i}`,
-        })),
-        steps: recipeValues.steps.map((step, i) => ({ ...step, order: i + 1 })),
+      // Step 1: Persist the recipe to Supabase first (API assigns the DB UUID).
+      const res = await fetch('/api/recipes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...recipeValues,
+          ingredients: recipeValues.ingredients.map((ing, i) => ({
+            ...ing,
+            id: `ing-${Date.now()}-${i}`,
+          })),
+          steps: recipeValues.steps.map((step, i) => ({ ...step, order: i + 1 })),
+        }),
       })
+      if (!res.ok) return
+      const data = await res.json()
+      let savedRecipe = data.recipe as typeof data.recipe
 
-      // Upload image to Supabase Storage before persisting the recipe
+      // Step 2: Upload image to Storage using the DB-assigned recipe UUID.
       if (imageFile && user) {
         const supabase = createSupabaseBrowserClient()
         const ext = imageFile.name.split('.').pop()?.toLowerCase() ?? 'jpg'
-        const path = `${user.id}/${recipe.id}.${ext}`
+        const path = `${user.id}/${savedRecipe.id}.${ext}`
         const { error: uploadErr } = await supabase.storage
           .from('recipe-images')
           .upload(path, imageFile, { upsert: true })
@@ -42,12 +48,23 @@ export default function NewRecipePage() {
           const {
             data: { publicUrl },
           } = supabase.storage.from('recipe-images').getPublicUrl(path)
-          recipe.photoUrl = publicUrl
+
+          // Step 3: Update the recipe row with the photo URL.
+          const updateRes = await fetch(`/api/recipes/${savedRecipe.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...savedRecipe, photoUrl: publicUrl }),
+          })
+          if (updateRes.ok) {
+            const updateData = await updateRes.json()
+            savedRecipe = updateData.recipe
+          }
         }
       }
 
-      dispatch({ type: 'ADD', payload: recipe })
-      router.push(`/recipes/${recipe.id}`)
+      // Update local state with the final recipe (including photoUrl from DB).
+      dispatch({ type: 'ADD', payload: savedRecipe })
+      router.push(`/recipes/${savedRecipe.id}`)
     } finally {
       setIsSubmitting(false)
     }
