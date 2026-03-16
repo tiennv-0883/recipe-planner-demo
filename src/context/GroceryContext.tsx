@@ -2,6 +2,7 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -10,7 +11,6 @@ import {
 } from 'react'
 import type { GroceryList, GroceryItem } from '@/src/types'
 import { currentIsoWeek } from '@/src/lib/weekUtils'
-import { getItem, setItem } from '@/src/lib/storage'
 
 // ---- State ----
 
@@ -121,26 +121,112 @@ function groceryReducer(state: GroceryState, action: GroceryAction): GroceryStat
 interface GroceryContextValue {
   state: GroceryState
   dispatch: Dispatch<GroceryAction>
+  /** API-backed dispatch for mutating actions */
+  apiDispatch: (action: GroceryAction) => Promise<void>
   activeList: GroceryList
 }
 
 const GroceryContext = createContext<GroceryContextValue | null>(null)
 
-const STORAGE_KEY = 'grocery-lists'
-
 export function GroceryProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(groceryReducer, initialState)
 
-  // Hydrate
+  // Load active week's grocery list from API on mount
   useEffect(() => {
-    const stored = getItem<Record<string, GroceryList>>(STORAGE_KEY)
-    if (stored) dispatch({ type: 'LOAD', payload: stored })
+    async function loadActiveList() {
+      const res = await fetch(`/api/grocery-lists/${state.activeWeek}`)
+      if (res.ok) {
+        const data = await res.json()
+        if (data.groceryList) {
+          dispatch({ type: 'SET_LIST', payload: data.groceryList })
+        }
+      }
+    }
+    loadActiveList()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Persist
-  useEffect(() => {
-    if (Object.keys(state.lists).length > 0) {
-      setItem(STORAGE_KEY, state.lists)
+  const apiDispatch = useCallback(async (action: GroceryAction) => {
+    switch (action.type) {
+      case 'SET_ACTIVE_WEEK': {
+        dispatch(action)
+        const res = await fetch(`/api/grocery-lists/${action.payload}`)
+        if (res.ok) {
+          const data = await res.json()
+          if (data.groceryList) {
+            dispatch({ type: 'SET_LIST', payload: data.groceryList })
+          }
+        }
+        return
+      }
+      case 'SET_LIST': {
+        // Generate grocery list via API
+        const res = await fetch(`/api/grocery-lists/${action.payload.isoWeek}/generate`, {
+          method: 'POST',
+        })
+        if (res.ok) {
+          const data = await res.json()
+          if (data.groceryList) {
+            dispatch({ type: 'SET_LIST', payload: data.groceryList })
+          }
+        }
+        return
+      }
+      case 'TOGGLE_ITEM': {
+        const { isoWeek, itemId } = action.payload
+        // Optimistic update
+        dispatch(action)
+        const list = state.lists[isoWeek]
+        const item = list?.items.find((i) => i.id === itemId)
+        if (item) {
+          await fetch(`/api/grocery-lists/${isoWeek}/items/${itemId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ checked: !item.checked }),
+          })
+        }
+        return
+      }
+      case 'ADD_MANUAL_ITEM': {
+        const { isoWeek, item } = action.payload
+        const res = await fetch(`/api/grocery-lists/${isoWeek}/items`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: item.name,
+            quantity: item.quantity,
+            unit: item.unit,
+            category: item.category,
+          }),
+        })
+        if (res.ok) {
+          const data = await res.json()
+          if (data.groceryList) {
+            dispatch({ type: 'SET_LIST', payload: data.groceryList })
+          }
+        }
+        return
+      }
+      case 'REMOVE_ITEM': {
+        const { isoWeek, itemId } = action.payload
+        dispatch(action)
+        await fetch(`/api/grocery-lists/${isoWeek}/items/${itemId}`, {
+          method: 'DELETE',
+        })
+        return
+      }
+      case 'UPDATE_ITEM_QUANTITY': {
+        const { isoWeek, itemId, quantity } = action.payload
+        dispatch(action)
+        await fetch(`/api/grocery-lists/${isoWeek}/items/${itemId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ quantity }),
+        })
+        return
+      }
+      default:
+        dispatch(action)
     }
   }, [state.lists])
 
@@ -150,8 +236,8 @@ export function GroceryProvider({ children }: { children: React.ReactNode }) {
   )
 
   const value = useMemo(
-    () => ({ state, dispatch, activeList }),
-    [state, dispatch, activeList],
+    () => ({ state, dispatch, apiDispatch, activeList }),
+    [state, dispatch, apiDispatch, activeList],
   )
 
   return (

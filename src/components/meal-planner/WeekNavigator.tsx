@@ -1,19 +1,6 @@
 'use client'
 
-import { clsx } from 'clsx'
-import type { DayOfWeek } from '@/src/types'
 import { isoWeekToDateRange } from '@/src/lib/weekUtils'
-
-const DAYS: DayOfWeek[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-const DAY_SHORT: Record<DayOfWeek, string> = {
-  monday: 'Mon',
-  tuesday: 'Tue',
-  wednesday: 'Wed',
-  thursday: 'Thu',
-  friday: 'Fri',
-  saturday: 'Sat',
-  sunday: 'Sun',
-}
 
 interface WeekNavigatorProps {
   isoWeek: string

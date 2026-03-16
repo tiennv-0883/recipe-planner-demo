@@ -2,6 +2,7 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -10,7 +11,6 @@ import {
 } from 'react'
 import type { MealPlan, MealSlot, DayOfWeek, MealType } from '@/src/types'
 import { currentIsoWeek } from '@/src/lib/weekUtils'
-import { getItem, setItem } from '@/src/lib/storage'
 
 // ---- State ----
 
@@ -93,27 +93,94 @@ function mealPlanReducer(state: MealPlanState, action: MealPlanAction): MealPlan
 interface MealPlanContextValue {
   state: MealPlanState
   dispatch: Dispatch<MealPlanAction>
+  /** API-backed dispatch for ASSIGN, CLEAR_SLOT, CLEAR_WEEK */
+  apiDispatch: (action: MealPlanAction) => Promise<void>
   /** Active week's meal plan (always defined) */
   activePlan: MealPlan
 }
 
 const MealPlanContext = createContext<MealPlanContextValue | null>(null)
 
-const STORAGE_KEY = 'meal-plans'
-
 export function MealPlanProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(mealPlanReducer, initialState)
 
-  // Hydrate
+  // Load the active week's plan from API on mount
   useEffect(() => {
-    const stored = getItem<Record<string, MealPlan>>(STORAGE_KEY)
-    if (stored) dispatch({ type: 'LOAD', payload: stored })
+    async function loadActiveWeek() {
+      const res = await fetch(`/api/meal-plans/${state.activeWeek}`)
+      if (res.ok) {
+        const data = await res.json()
+        if (data.mealPlan) {
+          dispatch({
+            type: 'LOAD',
+            payload: { [state.activeWeek]: data.mealPlan },
+          })
+        }
+      }
+    }
+    loadActiveWeek()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Persist
-  useEffect(() => {
-    if (Object.keys(state.plans).length > 0) {
-      setItem(STORAGE_KEY, state.plans)
+  const apiDispatch = useCallback(async (action: MealPlanAction) => {
+    switch (action.type) {
+      case 'SET_ACTIVE_WEEK': {
+        dispatch(action)
+        const res = await fetch(`/api/meal-plans/${action.payload}`)
+        if (res.ok) {
+          const data = await res.json()
+          if (data.mealPlan) {
+            dispatch({ type: 'LOAD', payload: { [action.payload]: data.mealPlan } })
+          }
+        }
+        return
+      }
+      case 'ASSIGN': {
+        const { isoWeek, day, mealType, recipeId } = action.payload
+        const res = await fetch(`/api/meal-plans/${isoWeek}/slots`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ day, mealType, recipeId }),
+        })
+        if (res.ok) {
+          const data = await res.json()
+          if (data.mealPlan) {
+            dispatch({ type: 'LOAD', payload: { [isoWeek]: data.mealPlan } })
+          }
+        }
+        return
+      }
+      case 'CLEAR_SLOT': {
+        const { isoWeek, day, mealType } = action.payload
+        const plan = state.plans[isoWeek]
+        const slot = plan?.slots.find(
+          (s) => s.day === day && s.mealType === mealType,
+        )
+        if (slot) {
+          await fetch(`/api/meal-plans/${isoWeek}/slots/${slot.id}`, {
+            method: 'DELETE',
+          })
+        }
+        dispatch(action)
+        return
+      }
+      case 'CLEAR_WEEK': {
+        const isoWeek = action.payload
+        const plan = state.plans[isoWeek]
+        if (plan?.slots.length) {
+          await Promise.all(
+            plan.slots.map((s) =>
+              fetch(`/api/meal-plans/${isoWeek}/slots/${s.id}`, {
+                method: 'DELETE',
+              }),
+            ),
+          )
+        }
+        dispatch(action)
+        return
+      }
+      default:
+        dispatch(action)
     }
   }, [state.plans])
 
@@ -123,8 +190,8 @@ export function MealPlanProvider({ children }: { children: React.ReactNode }) {
   )
 
   const value = useMemo(
-    () => ({ state, dispatch, activePlan }),
-    [state, dispatch, activePlan],
+    () => ({ state, dispatch, apiDispatch, activePlan }),
+    [state, dispatch, apiDispatch, activePlan],
   )
 
   return (

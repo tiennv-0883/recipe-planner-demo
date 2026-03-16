@@ -2,10 +2,8 @@
 
 import Link from 'next/link'
 import type { Recipe, MealPlan } from '@/src/types'
-import { isoWeekToDateRange } from '@/src/lib/weekUtils'
 
 const DAYS_ORDERED = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const
-const MEAL_TYPES = ['breakfast', 'lunch', 'dinner'] as const
 
 interface WeekAtAGlanceProps {
   isoWeek: string
@@ -14,7 +12,6 @@ interface WeekAtAGlanceProps {
 }
 
 export default function WeekAtAGlance({ isoWeek, plan, recipesById }: WeekAtAGlanceProps) {
-  const { start } = isoWeekToDateRange(isoWeek)
   const filledCount = plan.slots.length
   const totalSlots = 7 * 3
 

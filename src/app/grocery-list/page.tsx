@@ -18,7 +18,7 @@ import type { FoodCategory } from '@/src/types'
 
 export default function GroceryListPage() {
   const { state: groceryState, dispatch: groceryDispatch, activeList } = useGrocery()
-  const { state: mealState, dispatch: mealDispatch } = useMealPlan()
+  const { state: mealState } = useMealPlan()
   const { allRecipes } = useRecipes()
 
   const recipesById = Object.fromEntries(allRecipes.map((r) => [r.id, r]))

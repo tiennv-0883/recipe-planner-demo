@@ -14,7 +14,8 @@ export default function RecipeDetailPage() {
 
   const recipe = getRecipe(state.recipes, params.id as string)
 
-  function handleDelete(id: string) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function handleDelete(_id: string) {
     if (!confirm('Are you sure you want to delete this recipe?')) return
     const deleted = deleteRecipe(recipe!)
     dispatch({ type: 'UPDATE', payload: deleted })

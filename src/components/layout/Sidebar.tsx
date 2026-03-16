@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { clsx } from 'clsx'
+import LogoutButton from '@/src/components/LogoutButton'
 
 interface NavItem {
   href: string
@@ -99,7 +100,8 @@ export default function Sidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="border-t border-gray-200 p-4">
+      <div className="border-t border-gray-200 p-4 space-y-2">
+        <LogoutButton />
         <p className="text-xs text-gray-400 text-center">Recipe Planner v1.0</p>
       </div>
     </aside>

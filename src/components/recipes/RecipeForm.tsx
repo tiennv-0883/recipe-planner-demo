@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { clsx } from 'clsx'
-import type { Recipe, Tag, IngredientLine, PreparationStep } from '@/src/types'
+import type { Tag, IngredientLine, PreparationStep } from '@/src/types'
 
 const ALL_TAGS: Tag[] = ['breakfast', 'lunch', 'dinner', 'healthy', 'vegan', 'vegetarian']
 
