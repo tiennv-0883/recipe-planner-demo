@@ -16,7 +16,7 @@ interface PickerTarget {
 }
 
 export default function MealPlannerPage() {
-  const { state, dispatch, activePlan } = useMealPlan()
+  const { state, apiDispatch, activePlan } = useMealPlan()
   const { allRecipes } = useRecipes()
   const [pickerTarget, setPickerTarget] = useState<PickerTarget | null>(null)
 
@@ -24,16 +24,16 @@ export default function MealPlannerPage() {
 
   function navigatePrev() {
     const prev = relativeIsoWeek(state.activeWeek, -1)
-    dispatch({ type: 'SET_ACTIVE_WEEK', payload: prev })
+    apiDispatch({ type: 'SET_ACTIVE_WEEK', payload: prev })
   }
 
   function navigateNext() {
     const next = relativeIsoWeek(state.activeWeek, 1)
-    dispatch({ type: 'SET_ACTIVE_WEEK', payload: next })
+    apiDispatch({ type: 'SET_ACTIVE_WEEK', payload: next })
   }
 
   function navigateToday() {
-    dispatch({ type: 'SET_ACTIVE_WEEK', payload: currentIsoWeek() })
+    apiDispatch({ type: 'SET_ACTIVE_WEEK', payload: currentIsoWeek() })
   }
 
   function handleAssign(day: DayOfWeek, mealType: MealType) {
@@ -42,7 +42,7 @@ export default function MealPlannerPage() {
 
   function handleSelectRecipe(recipeId: string) {
     if (!pickerTarget) return
-    dispatch({
+    apiDispatch({
       type: 'ASSIGN',
       payload: {
         isoWeek: state.activeWeek,
@@ -51,10 +51,11 @@ export default function MealPlannerPage() {
         recipeId,
       },
     })
+    setPickerTarget(null)
   }
 
   function handleClear(day: DayOfWeek, mealType: MealType) {
-    dispatch({
+    apiDispatch({
       type: 'CLEAR_SLOT',
       payload: { isoWeek: state.activeWeek, day, mealType },
     })
@@ -120,7 +121,7 @@ export default function MealPlannerPage() {
             <button
               onClick={() => {
                 if (confirm('Clear all meals for this week?')) {
-                  dispatch({ type: 'CLEAR_WEEK', payload: state.activeWeek })
+                  apiDispatch({ type: 'CLEAR_WEEK', payload: state.activeWeek })
                 }
               }}
               className="text-sm text-red-500 hover:text-red-700 font-medium"

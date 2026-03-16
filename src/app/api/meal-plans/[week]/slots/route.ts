@@ -67,9 +67,8 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
     .eq('day', day)
     .eq('meal_type', mealType)
 
-  const slotId = `${week}-${day}-${mealType}`
+  // Let Supabase generate the UUID via gen_random_uuid()
   const { error: slotErr } = await supabase.from('meal_slots').insert({
-    id: slotId,
     meal_plan_id: plan.id,
     day,
     meal_type: mealType,

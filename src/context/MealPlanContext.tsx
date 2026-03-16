@@ -43,7 +43,8 @@ type MealPlanAction =
 function mealPlanReducer(state: MealPlanState, action: MealPlanAction): MealPlanState {
   switch (action.type) {
     case 'LOAD':
-      return { ...state, plans: action.payload }
+      // Merge incoming week(s) into existing plans instead of replacing all
+      return { ...state, plans: { ...state.plans, ...action.payload } }
 
     case 'SET_ACTIVE_WEEK':
       return { ...state, activeWeek: action.payload }

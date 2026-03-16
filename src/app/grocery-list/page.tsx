@@ -5,43 +5,30 @@ import GroceryCategory from '@/src/components/grocery/GroceryCategory'
 import AddManualItemForm from '@/src/components/grocery/AddManualItemForm'
 import WeekNavigator from '@/src/components/meal-planner/WeekNavigator'
 import { useGrocery } from '@/src/context/GroceryContext'
-import { useMealPlan } from '@/src/context/MealPlanContext'
-import { useRecipes } from '@/src/context/RecipeContext'
 import { relativeIsoWeek, currentIsoWeek } from '@/src/lib/weekUtils'
-import {
-  generateGroceryList,
-  groupByCategory,
-  uncheckedCount,
-  addManualItem,
-} from '@/src/services/groceryList'
+import { groupByCategory, uncheckedCount } from '@/src/services/groceryList'
 import type { FoodCategory } from '@/src/types'
 
 export default function GroceryListPage() {
-  const { state: groceryState, dispatch: groceryDispatch, activeList } = useGrocery()
-  const { state: mealState } = useMealPlan()
-  const { allRecipes } = useRecipes()
-
-  const recipesById = Object.fromEntries(allRecipes.map((r) => [r.id, r]))
-  const activePlan = mealState.plans[groceryState.activeWeek] ?? {
-    isoWeek: groceryState.activeWeek,
-    slots: [],
-    updatedAt: '',
-  }
+  const { state: groceryState, apiDispatch: groceryApiDispatch, activeList } = useGrocery()
 
   function handleGenerate() {
-    const list = generateGroceryList(activePlan, recipesById)
-    groceryDispatch({ type: 'SET_LIST', payload: list })
+    // Calls POST /api/grocery-lists/[week]/generate → saves to Supabase
+    groceryApiDispatch({
+      type: 'SET_LIST',
+      payload: { ...activeList, isoWeek: groceryState.activeWeek },
+    })
   }
 
   function handleToggle(itemId: string) {
-    groceryDispatch({
+    groceryApiDispatch({
       type: 'TOGGLE_ITEM',
       payload: { isoWeek: groceryState.activeWeek, itemId },
     })
   }
 
   function handleRemove(itemId: string) {
-    groceryDispatch({
+    groceryApiDispatch({
       type: 'REMOVE_ITEM',
       payload: { isoWeek: groceryState.activeWeek, itemId },
     })
@@ -53,28 +40,35 @@ export default function GroceryListPage() {
     unit: string
     category: FoodCategory
   }) {
-    const updatedList = addManualItem(activeList, item)
-    groceryDispatch({ type: 'SET_LIST', payload: updatedList })
+    // ADD_MANUAL_ITEM calls POST /api/grocery-lists/[week]/items
+    groceryApiDispatch({
+      type: 'ADD_MANUAL_ITEM',
+      payload: {
+        isoWeek: groceryState.activeWeek,
+        item: { ...item, id: '', checked: false, isManual: true },
+      },
+    })
   }
 
   function navigatePrev() {
     const prev = relativeIsoWeek(groceryState.activeWeek, -1)
-    groceryDispatch({ type: 'SET_ACTIVE_WEEK', payload: prev })
+    groceryApiDispatch({ type: 'SET_ACTIVE_WEEK', payload: prev })
   }
 
   function navigateNext() {
     const next = relativeIsoWeek(groceryState.activeWeek, 1)
-    groceryDispatch({ type: 'SET_ACTIVE_WEEK', payload: next })
+    groceryApiDispatch({ type: 'SET_ACTIVE_WEEK', payload: next })
   }
 
   function navigateToday() {
-    groceryDispatch({ type: 'SET_ACTIVE_WEEK', payload: currentIsoWeek() })
+    groceryApiDispatch({ type: 'SET_ACTIVE_WEEK', payload: currentIsoWeek() })
   }
 
   const groups = groupByCategory(activeList.items)
   const remaining = uncheckedCount(activeList)
   const total = activeList.items.length
-  const hasMeals = activePlan.slots.length > 0
+  // Generate button always enabled — API fetches meal plan server-side
+  const hasMeals = true
 
   return (
     <MainLayout>

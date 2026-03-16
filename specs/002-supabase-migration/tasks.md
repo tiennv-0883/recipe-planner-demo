@@ -231,3 +231,20 @@ Task T090: "Fix src/app/recipes/[id]/edit/page.tsx (BUG-001)"
 - All Route Handlers start with an auth check (`supabase.auth.getUser()`) before any DB query — two-layer security with RLS
 - `SUPABASE_SERVICE_ROLE_KEY` is only used in the seed endpoint (T086/T101) — never exposed to the browser
 - The 90 existing unit tests in `tests/unit/` test pure service functions — they remain valid and must stay green throughout this migration
+
+---
+
+## Bug Fixes
+
+- [X] BUG-002 `MealPlanContext` reducer `LOAD` action replaced the entire `plans` object instead of merging — fixed: `{ ...state.plans, ...action.payload }`  
+  — `src/context/MealPlanContext.tsx`
+
+- [X] BUG-003 `MealPlannerPage` used local `dispatch` instead of `apiDispatch` for ASSIGN/CLEAR_SLOT/CLEAR_WEEK/SET_ACTIVE_WEEK — changes were never saved to Supabase  
+  — `src/app/meal-planner/page.tsx`
+
+- [X] BUG-004 `GroceryListPage` called local `generateGroceryList()` service instead of the API, used `dispatch` instead of `apiDispatch` — data was not persisted  
+  — `src/app/grocery-list/page.tsx`
+
+- [X] BUG-005 `slots/route.ts` inserted `id: "2026-W12-monday-breakfast"` into a `uuid` column → PostgreSQL rejected the value → 500  
+  — Removed `id: slotId` from the insert; UUID is now auto-generated via `gen_random_uuid()`  
+  — `src/app/api/meal-plans/[week]/slots/route.ts`
