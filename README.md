@@ -39,6 +39,8 @@ A full-stack meal planning application built with **Next.js 15**, **TypeScript**
 ### Grocery List
 ![Grocery list](./docs/screenshots/07-grocery-list.png)
 
+![Grocery list generate](./docs/screenshots/07-grocery-list-generate.png)
+
 ---
 
 ## Tech Stack
