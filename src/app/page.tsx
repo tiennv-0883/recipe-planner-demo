@@ -8,11 +8,13 @@ import { useMealPlan } from '@/src/context/MealPlanContext'
 import { useGrocery } from '@/src/context/GroceryContext'
 import { uncheckedCount } from '@/src/services/groceryList'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 export default function DashboardPage() {
   const { allRecipes } = useRecipes()
   const { state: mealState, activePlan } = useMealPlan()
   const { activeList } = useGrocery()
+  const t = useTranslations('dashboard')
 
   const recipesById = Object.fromEntries(allRecipes.map((r) => [r.id, r]))
   const groceryRemaining = uncheckedCount(activeList)
@@ -23,16 +25,14 @@ export default function DashboardPage() {
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Welcome back! Here&apos;s your week at a glance.
-          </p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-sm text-gray-500 mt-1">{t('subtitle')}</p>
         </div>
 
         {/* Quick stats */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
           <StatCard
-            label="Total Recipes"
+            label={t('stats.totalRecipes')}
             value={allRecipes.length}
             href="/recipes"
             icon={
@@ -42,7 +42,7 @@ export default function DashboardPage() {
             }
           />
           <StatCard
-            label="Meals Planned"
+            label={t('stats.mealsPlanned')}
             value={filledMeals}
             href="/meal-planner"
             icon={
@@ -52,7 +52,7 @@ export default function DashboardPage() {
             }
           />
           <StatCard
-            label="Grocery Items Left"
+            label={t('stats.groceryItemsLeft')}
             value={groceryRemaining}
             href="/grocery-list"
             icon={

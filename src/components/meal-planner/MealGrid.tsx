@@ -1,26 +1,13 @@
 'use client'
 
 import { clsx } from 'clsx'
+import { useTranslations } from 'next-intl'
 import type { DayOfWeek, MealType, MealPlan } from '@/src/types'
 import type { Recipe } from '@/src/types'
 import { getSlot, MAX_RECIPES_PER_SLOT } from '@/src/services/mealPlanner'
 
 const DAYS: DayOfWeek[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 const MEAL_TYPES: MealType[] = ['breakfast', 'lunch', 'dinner']
-const DAY_LABELS: Record<DayOfWeek, string> = {
-  monday: 'Mon',
-  tuesday: 'Tue',
-  wednesday: 'Wed',
-  thursday: 'Thu',
-  friday: 'Fri',
-  saturday: 'Sat',
-  sunday: 'Sun',
-}
-const MEAL_LABELS: Record<MealType, string> = {
-  breakfast: 'Breakfast',
-  lunch: 'Lunch',
-  dinner: 'Dinner',
-}
 
 interface MealGridProps {
   plan: MealPlan
@@ -30,6 +17,9 @@ interface MealGridProps {
 }
 
 export default function MealGrid({ plan, recipesById, onAddRecipe, onRemoveRecipe }: MealGridProps) {
+  const t = useTranslations('mealPlanner')
+  const tDay = useTranslations('mealPlanner.days')
+  const tMeal = useTranslations('mealPlanner.meals')
   return (
     <div className="overflow-x-auto">
       <table className="w-full min-w-[640px] border-collapse">
@@ -41,7 +31,7 @@ export default function MealGrid({ plan, recipesById, onAddRecipe, onRemoveRecip
                 key={day}
                 className="p-2 text-center text-xs font-semibold text-gray-500 uppercase tracking-wide"
               >
-                {DAY_LABELS[day]}
+                {tDay(day.slice(0, 3) as Parameters<typeof tDay>[0])}
               </th>
             ))}
           </tr>
@@ -50,7 +40,7 @@ export default function MealGrid({ plan, recipesById, onAddRecipe, onRemoveRecip
           {MEAL_TYPES.map((mealType) => (
             <tr key={mealType}>
               <td className="py-2 pr-3 text-xs font-semibold text-gray-500 uppercase tracking-wide align-top">
-                {MEAL_LABELS[mealType]}
+                {tMeal(mealType as Parameters<typeof tMeal>[0])}
               </td>
               {DAYS.map((day) => {
                 const slot = getSlot(plan, day, mealType)
@@ -124,7 +114,7 @@ export default function MealGrid({ plan, recipesById, onAddRecipe, onRemoveRecip
                               className="mt-1 text-xs text-brand-500 hover:text-brand-700 font-medium text-left"
                               aria-label={`Add another recipe to ${mealType} on ${day}`}
                             >
-                              + Add
+                              {t('addRecipe')}
                             </button>
                           )}
                         </div>

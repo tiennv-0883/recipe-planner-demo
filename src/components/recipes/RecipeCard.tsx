@@ -1,6 +1,9 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { clsx } from 'clsx'
+import { useTranslations } from 'next-intl'
 import type { Recipe } from '@/src/types'
 
 interface RecipeCardProps {
@@ -18,6 +21,7 @@ const TAG_STYLES: Record<string, string> = {
 }
 
 export default function RecipeCard({ recipe, className }: RecipeCardProps) {
+  const tTag = useTranslations('recipes.tags')
   return (
     <Link
       href={`/recipes/${recipe.id}`}
@@ -78,7 +82,7 @@ export default function RecipeCard({ recipe, className }: RecipeCardProps) {
                   TAG_STYLES[tag] ?? 'bg-gray-100 text-gray-700',
                 )}
               >
-                {tag}
+                {tTag(tag as Parameters<typeof tTag>[0])}
               </span>
             ))}
           </div>

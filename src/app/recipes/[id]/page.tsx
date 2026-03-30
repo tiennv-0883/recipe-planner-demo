@@ -6,11 +6,13 @@ import RecipeDetail from '@/src/components/recipes/RecipeDetail'
 import { useRecipes } from '@/src/context/RecipeContext'
 import { deleteRecipe } from '@/src/services/recipes'
 import { getRecipe } from '@/src/services/recipes'
+import { useTranslations } from 'next-intl'
 
 export default function RecipeDetailPage() {
   const params = useParams()
   const router = useRouter()
   const { state, dispatch } = useRecipes()
+  const t = useTranslations('recipes')
 
   const recipe = getRecipe(state.recipes, params.id as string)
 
@@ -26,8 +28,8 @@ export default function RecipeDetailPage() {
     return (
       <MainLayout>
         <div className="max-w-2xl mx-auto py-20 text-center">
-          <h1 className="text-xl font-semibold text-gray-700">Recipe not found</h1>
-          <p className="text-gray-500 mt-2">This recipe may have been deleted or doesn&apos;t exist.</p>
+          <h1 className="text-xl font-semibold text-gray-700">{t('detail.notFound')}</h1>
+          <p className="text-gray-500 mt-2">{t('detail.notFoundSub')}</p>
         </div>
       </MainLayout>
     )

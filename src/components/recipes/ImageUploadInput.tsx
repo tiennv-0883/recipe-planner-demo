@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useTranslations } from 'next-intl'
 
 interface ImageUploadInputProps {
   /** URL of the existing image shown on load (edit mode). */
@@ -26,6 +27,7 @@ export default function ImageUploadInput({
   onFileSelect,
   error,
 }: ImageUploadInputProps) {
+  const t = useTranslations('recipes')
   const inputRef = useRef<HTMLInputElement>(null)
   // Preview URL — starts as currentUrl (edit) or null (new)
   const [previewUrl, setPreviewUrl] = useState<string | null>(currentUrl ?? null)
@@ -80,8 +82,8 @@ export default function ImageUploadInput({
   return (
     <div>
       <span className="block text-sm font-medium text-gray-700 mb-1">
-        Photo{' '}
-        <span className="text-gray-400 font-normal text-xs">(optional · JPEG or PNG, max 5 MB)</span>
+        {t('form.photoLabel')}{' '}
+        <span className="text-gray-400 font-normal text-xs">({t('form.photoHint')})</span>
       </span>
 
       {/* Upload area */}
@@ -142,7 +144,7 @@ export default function ImageUploadInput({
                 d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 12V6a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 6v12a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 18v-6z"
               />
             </svg>
-            <span className="text-sm font-medium">Click to upload a photo</span>
+            <span className="text-sm font-medium">{t('form.clickToUpload')}</span>
           </div>
         )}
       </div>

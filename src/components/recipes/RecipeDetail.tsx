@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { clsx } from 'clsx'
 import type { Recipe } from '@/src/types'
+import { useTranslations } from 'next-intl'
 
 interface RecipeDetailProps {
   recipe: Recipe
@@ -20,6 +21,9 @@ const TAG_STYLES: Record<string, string> = {
 }
 
 export default function RecipeDetail({ recipe, onDelete }: RecipeDetailProps) {
+  const t = useTranslations('recipes')
+  const tTag = useTranslations('recipes.tags')
+
   return (
     <article className="max-w-2xl mx-auto">
       {/* Back */}
@@ -30,7 +34,7 @@ export default function RecipeDetail({ recipe, onDelete }: RecipeDetailProps) {
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
         </svg>
-        Back to recipes
+        {t('detail.backToRecipes')}
       </Link>
 
       {/* Photo */}
@@ -55,14 +59,14 @@ export default function RecipeDetail({ recipe, onDelete }: RecipeDetailProps) {
             href={`/recipes/${recipe.id}/edit`}
             className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
           >
-            Edit
+            {t('detail.edit')}
           </Link>
           {onDelete && (
             <button
               onClick={() => onDelete(recipe.id)}
               className="rounded-lg border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
             >
-              Delete
+              {t('detail.delete')}
             </button>
           )}
         </div>
@@ -74,13 +78,13 @@ export default function RecipeDetail({ recipe, onDelete }: RecipeDetailProps) {
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          {recipe.cookTimeMinutes} min
+          {t('detail.min', { n: recipe.cookTimeMinutes })}
         </span>
         <span className="flex items-center gap-1.5">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
-          {recipe.servings} serving{recipe.servings !== 1 ? 's' : ''}
+          {t('detail.servings', { n: recipe.servings })}
         </span>
       </div>
 
@@ -95,7 +99,7 @@ export default function RecipeDetail({ recipe, onDelete }: RecipeDetailProps) {
                 TAG_STYLES[tag] ?? 'bg-gray-100 text-gray-700',
               )}
             >
-              {tag}
+              {tTag(tag as Parameters<typeof tTag>[0])}
             </span>
           ))}
         </div>
@@ -103,7 +107,7 @@ export default function RecipeDetail({ recipe, onDelete }: RecipeDetailProps) {
 
       {/* Ingredients */}
       <section className="mb-8">
-        <h2 className="text-lg font-semibold text-gray-900 mb-3">Ingredients</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">{t('detail.ingredients')}</h2>
         <ul className="divide-y divide-gray-100 rounded-xl border border-gray-200 bg-white">
           {recipe.ingredients.map((ingredient) => (
             <li
@@ -121,7 +125,7 @@ export default function RecipeDetail({ recipe, onDelete }: RecipeDetailProps) {
 
       {/* Steps */}
       <section>
-        <h2 className="text-lg font-semibold text-gray-900 mb-3">Instructions</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">{t('detail.instructions')}</h2>
         <ol className="space-y-4">
           {recipe.steps.map((step) => (
             <li key={step.order} className="flex gap-4">

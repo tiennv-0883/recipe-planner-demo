@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import type { FoodCategory } from '@/src/types'
-import { FOOD_CATEGORY_LABELS } from '@/src/data/categories'
 
 const CATEGORIES: FoodCategory[] = [
   'vegetables_fruits',
@@ -18,6 +18,8 @@ interface AddManualItemFormProps {
 }
 
 export default function AddManualItemForm({ onAdd }: AddManualItemFormProps) {
+  const t = useTranslations('groceryList')
+  const tCat = useTranslations('categories')
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [quantity, setQuantity] = useState('')
@@ -53,41 +55,41 @@ export default function AddManualItemForm({ onAdd }: AddManualItemFormProps) {
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
         </svg>
-        Add item manually
+        {t('addManual.trigger')}
       </button>
     )
   }
 
   return (
     <form onSubmit={handleSubmit} className="rounded-xl border border-brand-200 bg-brand-50 p-4">
-      <h3 className="text-sm font-semibold text-gray-800 mb-3">Add item manually</h3>
+      <h3 className="text-sm font-semibold text-gray-800 mb-3">{t('addManual.title')}</h3>
       <div className="grid grid-cols-[1fr_80px_80px] gap-2 mb-2">
         <input
           type="text"
-          placeholder="Item name"
+          placeholder={t('addManual.itemName')}
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-          aria-label="Item name"
+          aria-label={t('addManual.itemName')}
           autoFocus
         />
         <input
           type="number"
-          placeholder="Qty"
+          placeholder={t('addManual.qty')}
           min={0}
           step="any"
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
           className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-          aria-label="Quantity"
+          aria-label={t('addManual.qty')}
         />
         <input
           type="text"
-          placeholder="Unit"
+          placeholder={t('addManual.unit')}
           value={unit}
           onChange={(e) => setUnit(e.target.value)}
           className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-          aria-label="Unit"
+          aria-label={t('addManual.unit')}
         />
       </div>
       <div className="mb-3">
@@ -99,7 +101,7 @@ export default function AddManualItemForm({ onAdd }: AddManualItemFormProps) {
         >
           {CATEGORIES.map((cat) => (
             <option key={cat} value={cat}>
-              {FOOD_CATEGORY_LABELS[cat]}
+              {tCat(cat as Parameters<typeof tCat>[0])}
             </option>
           ))}
         </select>
@@ -110,14 +112,14 @@ export default function AddManualItemForm({ onAdd }: AddManualItemFormProps) {
           type="submit"
           className="rounded-lg bg-brand-500 px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-600 transition-colors"
         >
-          Add
+          {t('addManual.add')}
         </button>
         <button
           type="button"
           onClick={() => setOpen(false)}
           className="rounded-lg border border-gray-300 px-4 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
         >
-          Cancel
+          {t('addManual.cancel')}
         </button>
       </div>
     </form>

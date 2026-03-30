@@ -5,9 +5,11 @@ import MainLayout from '@/src/components/layout/MainLayout'
 import RecipeList from '@/src/components/recipes/RecipeList'
 import RecipeSearch from '@/src/components/recipes/RecipeSearch'
 import { useRecipes } from '@/src/context/RecipeContext'
+import { useTranslations } from 'next-intl'
 
 export default function RecipesPage() {
   const { filteredRecipes, state, dispatch } = useRecipes()
+  const t = useTranslations('recipes')
   const hasFilters = !!(state.searchQuery || state.selectedTags.length > 0)
 
   function handleClearFilters() {
@@ -20,11 +22,10 @@ export default function RecipesPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Recipes</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
             <p className="text-sm text-gray-500 mt-0.5">
               {filteredRecipes.length}{' '}
-              {filteredRecipes.length === 1 ? 'result' : 'results'}
-              {hasFilters ? ' found' : ' in your collection'}
+              {hasFilters ? t('found') : t('inYourCollection')}
             </p>
           </div>
           <Link
@@ -34,7 +35,7 @@ export default function RecipesPage() {
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
             </svg>
-            New recipe
+            {t('newRecipe')}
           </Link>
         </div>
 
@@ -49,8 +50,8 @@ export default function RecipesPage() {
           viewMode={state.viewMode}
           emptyMessage={
             hasFilters
-              ? 'No recipes match your filters.'
-              : 'No recipes yet. Add your first recipe!'
+              ? t('empty.withFilters')
+              : t('empty.noFilters')
           }
           onClearFilters={hasFilters ? handleClearFilters : undefined}
         />

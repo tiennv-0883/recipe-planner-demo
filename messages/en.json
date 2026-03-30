@@ -1,0 +1,217 @@
+{
+  "auth": {
+    "layout": {
+      "tagline": "Plan your meals, simplify your week"
+    },
+    "login": {
+      "title": "Sign in to your account",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "placeholder": {
+        "email": "you@example.com"
+      },
+      "error": {
+        "required": "Email and password are required.",
+        "failed": "Login failed. Please try again."
+      }
+    },
+    "signup": {
+      "title": "Create your account",
+      "passwordHint": "min. 8 characters",
+      "submit": "Create account",
+      "submitting": "Creating account…",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "error": {
+        "emailRequired": "Email is required.",
+        "emailInvalid": "Enter a valid email address.",
+        "passwordTooShort": "Password must be at least 8 characters.",
+        "failed": "Sign up failed. Please try again."
+      }
+    }
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "recipes": "Recipes",
+    "mealPlanner": "Meal Planner",
+    "groceryList": "Grocery List",
+    "signOut": "Sign out",
+    "brand": "Recipe Planner",
+    "language": {
+      "vi": "Tiếng Việt",
+      "en": "English"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Welcome back! Here's your week at a glance.",
+    "stats": {
+      "totalRecipes": "Total Recipes",
+      "mealsPlanned": "Meals Planned",
+      "groceryItemsLeft": "Grocery Items Left"
+    },
+    "weekAtAGlance": {
+      "title": "This Week",
+      "manage": "Manage",
+      "mealsPlanned": "{count} meals planned",
+      "slotsEmpty": "{count} slots empty",
+      "noMeals": "No meals",
+      "emptyWeek": "No meals planned for this week",
+      "planMeals": "Plan meals"
+    },
+    "recentRecipes": {
+      "title": "Recent Recipes",
+      "viewAll": "View all",
+      "empty": "No recipes yet."
+    }
+  },
+  "recipes": {
+    "title": "Recipes",
+    "tags": {
+      "breakfast": "Breakfast",
+      "lunch": "Lunch",
+      "dinner": "Dinner",
+      "healthy": "Healthy",
+      "vegan": "Vegan",
+      "vegetarian": "Vegetarian"
+    },
+    "inYourCollection": "in your collection",
+    "found": "found",
+    "newRecipe": "New recipe",
+    "empty": {
+      "noFilters": "No recipes yet. Add your first recipe!",
+      "withFilters": "No recipes match your filters."
+    },
+    "search": {
+      "placeholder": "Search title or ingredient…",
+      "ariaLabel": "Search recipes by title or ingredient"
+    },
+    "filter": {
+      "clear": "Clear filters",
+      "ariaLabel": "Clear all filters"
+    },
+    "detail": {
+      "notFound": "Recipe not found",
+      "notFoundSub": "This recipe may have been deleted or doesn't exist.",
+      "backToRecipes": "Back to recipes",
+      "edit": "Edit",
+      "delete": "Delete",
+      "ingredients": "Ingredients",
+      "instructions": "Instructions",
+      "servings": "{n} servings",
+      "min": "{n} min"
+    },
+    "form": {
+      "titleLabel": "Title",
+      "titlePlaceholder": "e.g. Spaghetti Bolognese",
+      "cookTimeLabel": "Cook time (min)",
+      "servingsLabel": "Servings",
+      "tagsLabel": "Tags",
+      "ingredientsLabel": "Ingredients",
+      "stepsLabel": "Steps",
+      "photoLabel": "Photo",
+      "photoHint": "Optional · JPEG or PNG, max 5 MB",
+      "namePlaceholder": "Name",
+      "qtyPlaceholder": "Qty",
+      "unitPlaceholder": "Unit",
+      "addIngredient": "+ Add ingredient",
+      "addStep": "+ Add step",
+      "clickToUpload": "Click to upload a photo",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "errors": {
+        "titleRequired": "Title is required.",
+        "cookTimeInvalid": "Cook time must be a positive number.",
+        "servingsInvalid": "Servings must be a positive number.",
+        "tagsRequired": "Select at least one tag.",
+        "ingredientsRequired": "All ingredient fields are required.",
+        "stepsRequired": "All steps must have a description."
+      }
+    },
+    "picker": {
+      "chooseRecipe": "Choose a recipe",
+      "noFound": "No recipes found",
+      "servings": "{n} servings",
+      "searchAriaLabel": "Search recipes",
+      "closeAriaLabel": "Close"
+    }
+  },
+  "mealPlanner": {
+    "title": "Meal Planner",
+    "subtitle": "{filled} of {total} slots filled",
+    "clearWeek": "Clear week",
+    "clearConfirm": "Clear all meals for this week?",
+    "empty": {
+      "title": "No meals planned yet",
+      "subtitle": "Click any cell in the grid above to assign a recipe to a meal slot."
+    },
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    },
+    "meals": {
+      "breakfast": "Breakfast",
+      "lunch": "Lunch",
+      "dinner": "Dinner"
+    },
+    "weekNav": {
+      "thisWeek": "This week"
+    },
+    "addRecipe": "+ Add"
+  },
+  "groceryList": {
+    "title": "Grocery List",
+    "remaining": "{n} items remaining",
+    "remainingOne": "1 item remaining",
+    "generate": "Generate list",
+    "regenerate": "Regenerate",
+    "planMealsFirst": "Plan some meals first to generate your grocery list",
+    "empty": {
+      "noMeals": {
+        "title": "No grocery list yet",
+        "subtitle": "Plan your meals for the week to auto-generate a grocery list.",
+        "goToPlanner": "Go to Meal Planner"
+      },
+      "noItems": "Your grocery list is empty"
+    },
+    "addManual": {
+      "trigger": "Add item",
+      "title": "Add item manually",
+      "itemName": "Item name",
+      "qty": "Qty",
+      "unit": "Unit",
+      "add": "Add",
+      "cancel": "Cancel",
+      "errors": {
+        "required": "All fields are required.",
+        "qtyInvalid": "Quantity must be a positive number."
+      }
+    }
+  },
+  "categories": {
+    "vegetables_fruits": "Vegetables & Fruits",
+    "meat_fish": "Meat & Fish",
+    "dairy_eggs": "Dairy & Eggs",
+    "grains_bread": "Grains & Bread",
+    "spices_seasonings": "Spices & Seasonings",
+    "other": "Other"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The recipe or page you're looking for doesn't exist, or it may have been deleted.",
+    "goHome": "Go home",
+    "browseRecipes": "Browse recipes"
+  },
+  "common": {
+    "skipToContent": "Skip to main content"
+  }
+}

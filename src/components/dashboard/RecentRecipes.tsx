@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 import type { Recipe } from '@/src/types'
 
 interface RecentRecipesProps {
@@ -7,22 +8,23 @@ interface RecentRecipesProps {
 }
 
 export default function RecentRecipes({ recipes }: RecentRecipesProps) {
+  const t = useTranslations('dashboard')
   const recent = recipes.slice(0, 4)
 
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-5">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-base font-semibold text-gray-900">Recent Recipes</h2>
+        <h2 className="text-base font-semibold text-gray-900">{t('recentRecipes.title')}</h2>
         <Link
           href="/recipes"
           className="text-xs font-medium text-brand-600 hover:text-brand-700"
         >
-          View all →
+          {t('recentRecipes.viewAll')} →
         </Link>
       </div>
 
       {recent.length === 0 ? (
-        <p className="text-sm text-gray-400 py-4 text-center">No recipes yet.</p>
+        <p className="text-sm text-gray-400 py-4 text-center">{t('recentRecipes.empty')}</p>
       ) : (
         <ul className="divide-y divide-gray-100">
           {recent.map((recipe) => (

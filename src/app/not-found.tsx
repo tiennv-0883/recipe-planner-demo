@@ -1,6 +1,8 @@
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
-export default function NotFound() {
+export default async function NotFound() {
+  const t = await getTranslations('notFound')
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
       <div className="text-center max-w-md">
@@ -24,10 +26,9 @@ export default function NotFound() {
 
         {/* 404 headline */}
         <h1 className="text-6xl font-extrabold text-gray-900 mb-2">404</h1>
-        <h2 className="text-xl font-semibold text-gray-700 mb-3">Page not found</h2>
+        <h2 className="text-xl font-semibold text-gray-700 mb-3">{t('title')}</h2>
         <p className="text-sm text-gray-500 mb-8">
-          The recipe or page you&apos;re looking for doesn&apos;t exist, or it may have been
-          deleted.
+          {t('description')}
         </p>
 
         {/* Actions */}
@@ -39,13 +40,13 @@ export default function NotFound() {
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l9-9 9 9M5 10v11h14V10" />
             </svg>
-            Go home
+            {t('goHome')}
           </Link>
           <Link
             href="/recipes"
             className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2"
           >
-            Browse recipes
+            {t('browseRecipes')}
           </Link>
         </div>
       </div>

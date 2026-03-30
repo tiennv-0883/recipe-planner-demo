@@ -1,8 +1,8 @@
 'use client'
 
 import { clsx } from 'clsx'
+import { useTranslations } from 'next-intl'
 import type { GroceryItem } from '@/src/types'
-import { FOOD_CATEGORY_LABELS } from '@/src/data/categories'
 
 interface GroceryCategoryProps {
   category: string
@@ -17,13 +17,14 @@ export default function GroceryCategory({
   onToggle,
   onRemove,
 }: GroceryCategoryProps) {
+  const t = useTranslations('categories')
   const unchecked = items.filter((i) => !i.checked).length
 
   return (
     <section className="mb-6">
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-          {FOOD_CATEGORY_LABELS[category as keyof typeof FOOD_CATEGORY_LABELS] ?? category}
+          {t(category as Parameters<typeof t>[0])}
         </h3>
         <span className="text-xs text-gray-400">
           {unchecked}/{items.length}

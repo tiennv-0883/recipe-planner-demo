@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import MainLayout from '@/src/components/layout/MainLayout'
 import WeekNavigator from '@/src/components/meal-planner/WeekNavigator'
 import MealGrid from '@/src/components/meal-planner/MealGrid'
@@ -16,6 +17,7 @@ interface PickerTarget {
 }
 
 export default function MealPlannerPage() {
+  const t = useTranslations('mealPlanner')
   const { state, apiDispatch, activePlan } = useMealPlan()
   const { allRecipes } = useRecipes()
   const [pickerTarget, setPickerTarget] = useState<PickerTarget | null>(null)
@@ -69,9 +71,9 @@ export default function MealPlannerPage() {
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Meal Planner</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            {filledCount} of {totalSlots} slots filled
+            {t('subtitle', { filled: filledCount, total: totalSlots })}
           </p>
         </div>
 
@@ -108,9 +110,9 @@ export default function MealPlannerPage() {
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-            <p className="text-base font-semibold text-brand-700 mb-1">No meals planned yet</p>
+            <p className="text-base font-semibold text-brand-700 mb-1">{t('empty.title')}</p>
             <p className="text-sm text-brand-500">
-              Click any cell in the grid above to assign a recipe to a meal slot.
+              {t('empty.subtitle')}
             </p>
           </div>
         )}
@@ -120,13 +122,13 @@ export default function MealPlannerPage() {
           <div className="mt-4 flex justify-end">
             <button
               onClick={() => {
-                if (confirm('Clear all meals for this week?')) {
+                if (confirm(t('clearConfirm'))) {
                   apiDispatch({ type: 'CLEAR_WEEK', payload: state.activeWeek })
                 }
               }}
               className="text-sm text-red-500 hover:text-red-700 font-medium"
             >
-              Clear week
+              {t('clearWeek')}
             </button>
           </div>
         )}

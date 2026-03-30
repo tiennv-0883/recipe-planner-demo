@@ -4,20 +4,14 @@ import { useEffect, useRef, useState } from 'react'
 import { clsx } from 'clsx'
 import type { Tag } from '@/src/types'
 import { useRecipes } from '@/src/context/RecipeContext'
+import { useTranslations } from 'next-intl'
 
 const ALL_TAGS: Tag[] = ['breakfast', 'lunch', 'dinner', 'healthy', 'vegan', 'vegetarian']
 
-const TAG_LABELS: Record<Tag, string> = {
-  breakfast: 'Breakfast',
-  lunch: 'Lunch',
-  dinner: 'Dinner',
-  healthy: 'Healthy',
-  vegan: 'Vegan',
-  vegetarian: 'Vegetarian',
-}
-
 export default function RecipeSearch() {
   const { state, dispatch } = useRecipes()
+  const t = useTranslations('recipes')
+  const tTag = useTranslations('recipes.tags')
 
   // Local value for the input so we can debounce the dispatch
   const [inputValue, setInputValue] = useState(state.searchQuery)
@@ -61,11 +55,11 @@ export default function RecipeSearch() {
           </span>
           <input
             type="search"
-            placeholder="Search title or ingredient…"
+            placeholder={t('search.placeholder')}
             value={inputValue}
             onChange={(e) => handleInputChange(e.target.value)}
             className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-9 pr-3 text-sm text-gray-900 placeholder-gray-400 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-            aria-label="Search recipes by title or ingredient"
+            aria-label={t('search.ariaLabel')}
           />
         </div>
 
@@ -124,7 +118,7 @@ export default function RecipeSearch() {
               )}
               aria-pressed={active}
             >
-              {TAG_LABELS[tag]}
+              {tTag(tag as Parameters<typeof tTag>[0])}
             </button>
           )
         })}
@@ -136,9 +130,9 @@ export default function RecipeSearch() {
               setInputValue('')
             }}
             className="rounded-full px-3 py-1 text-xs font-medium text-gray-400 hover:text-gray-600 underline transition-colors"
-            aria-label="Clear all filters"
+            aria-label={t('filter.ariaLabel')}
           >
-            Clear filters
+            {t('filter.clear')}
           </button>
         )}
       </div>

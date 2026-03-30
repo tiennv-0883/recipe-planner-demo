@@ -5,6 +5,7 @@ import { clsx } from 'clsx'
 import type { Tag, IngredientLine, PreparationStep } from '@/src/types'
 import ImageUploadInput from '@/src/components/recipes/ImageUploadInput'
 import { validateImageFile } from '@/src/lib/imageValidation'
+import { useTranslations } from 'next-intl'
 
 const ALL_TAGS: Tag[] = ['breakfast', 'lunch', 'dinner', 'healthy', 'vegan', 'vegetarian']
 
@@ -39,8 +40,10 @@ export default function RecipeForm({
   onSubmit,
   onCancel,
   isSubmitting = false,
-  submitLabel = 'Save Recipe',
+  submitLabel,
 }: RecipeFormProps) {
+  const t = useTranslations('recipes')
+  const tTag = useTranslations('recipes.tags')
   const [title, setTitle] = useState(initialValues?.title ?? '')
   const [cookTime, setCookTime] = useState(String(initialValues?.cookTimeMinutes ?? ''))
   const [servings, setServings] = useState(String(initialValues?.servings ?? ''))
@@ -95,16 +98,16 @@ export default function RecipeForm({
 
   function validate(): boolean {
     const errs: Record<string, string> = {}
-    if (!title.trim()) errs.title = 'Title is required.'
+    if (!title.trim()) errs.title = t('form.errors.titleRequired')
     if (!cookTime || isNaN(Number(cookTime)) || Number(cookTime) < 1)
-      errs.cookTime = 'Cook time must be a positive number.'
+      errs.cookTime = t('form.errors.cookTimeInvalid')
     if (!servings || isNaN(Number(servings)) || Number(servings) < 1)
-      errs.servings = 'Servings must be a positive number.'
-    if (tags.length === 0) errs.tags = 'Select at least one tag.'
+      errs.servings = t('form.errors.servingsInvalid')
+    if (tags.length === 0) errs.tags = t('form.errors.tagsRequired')
     if (ingredients.some((i) => !i.name.trim() || !i.quantity || !i.unit.trim()))
-      errs.ingredients = 'All ingredient fields are required.'
+      errs.ingredients = t('form.errors.ingredientsRequired')
     if (steps.some((s) => !s.trim()))
-      errs.steps = 'All steps must have a description.'
+      errs.steps = t('form.errors.stepsRequired')
     setErrors(errs)
     return Object.keys(errs).length === 0
   }
@@ -164,7 +167,7 @@ export default function RecipeForm({
       {/* Title */}
       <div>
         <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-          Title <span aria-hidden="true" className="text-red-500">*</span>
+          {t('form.titleLabel')} <span aria-hidden="true" className="text-red-500">*</span>
         </label>
         <input
           id="title"
@@ -172,7 +175,7 @@ export default function RecipeForm({
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className={fieldClass(errors.title)}
-          placeholder="e.g. Spaghetti Bolognese"
+          placeholder={t('form.titlePlaceholder')}
           aria-invalid={!!errors.title}
           aria-describedby={errors.title ? 'title-error' : undefined}
         />
@@ -185,7 +188,7 @@ export default function RecipeForm({
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label htmlFor="cookTime" className="block text-sm font-medium text-gray-700 mb-1">
-            Cook time (min) <span aria-hidden="true" className="text-red-500">*</span>
+            {t('form.cookTimeLabel')} <span aria-hidden="true" className="text-red-500">*</span>
           </label>
           <input
             id="cookTime"
@@ -200,7 +203,7 @@ export default function RecipeForm({
         </div>
         <div>
           <label htmlFor="servings" className="block text-sm font-medium text-gray-700 mb-1">
-            Servings <span aria-hidden="true" className="text-red-500">*</span>
+            {t('form.servingsLabel')} <span aria-hidden="true" className="text-red-500">*</span>
           </label>
           <input
             id="servings"
@@ -219,7 +222,7 @@ export default function RecipeForm({
       <div>
         <fieldset>
           <legend className="block text-sm font-medium text-gray-700 mb-2">
-            Tags <span aria-hidden="true" className="text-red-500">*</span>
+            {t('form.tagsLabel')} <span aria-hidden="true" className="text-red-500">*</span>
           </legend>
           <div className="flex flex-wrap gap-2">
             {ALL_TAGS.map((tag) => (
@@ -235,7 +238,7 @@ export default function RecipeForm({
                 )}
                 aria-pressed={tags.includes(tag)}
               >
-                {tag}
+                {tTag(tag as Parameters<typeof tTag>[0])}
               </button>
             ))}
           </div>
@@ -247,7 +250,7 @@ export default function RecipeForm({
       <div>
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-gray-700">
-            Ingredients <span aria-hidden="true" className="text-red-500">*</span>
+            {t('form.ingredientsLabel')} <span aria-hidden="true" className="text-red-500">*</span>
           </span>
         </div>
         <div className="space-y-2">
@@ -255,7 +258,7 @@ export default function RecipeForm({
             <div key={idx} className="grid grid-cols-[1fr_100px_100px_32px] gap-2 items-center">
               <input
                 type="text"
-                placeholder="Name"
+                placeholder={t('form.namePlaceholder')}
                 value={ing.name}
                 onChange={(e) => handleIngredientChange(idx, 'name', e.target.value)}
                 className={fieldClass(errors.ingredients)}
@@ -263,7 +266,7 @@ export default function RecipeForm({
               />
               <input
                 type="number"
-                placeholder="Qty"
+                placeholder={t('form.qtyPlaceholder')}
                 min={0}
                 step="any"
                 value={ing.quantity}
@@ -273,7 +276,7 @@ export default function RecipeForm({
               />
               <input
                 type="text"
-                placeholder="Unit"
+                placeholder={t('form.unitPlaceholder')}
                 value={ing.unit}
                 onChange={(e) => handleIngredientChange(idx, 'unit', e.target.value)}
                 className={fieldClass(errors.ingredients)}
@@ -300,7 +303,7 @@ export default function RecipeForm({
             onClick={addIngredient}
             className="text-sm text-brand-600 hover:text-brand-700 font-medium"
           >
-            + Add ingredient
+            {t('form.addIngredient')}
           </button>
         </div>
       </div>
@@ -308,7 +311,7 @@ export default function RecipeForm({
       {/* Steps */}
       <div>
         <span className="block text-sm font-medium text-gray-700 mb-2">
-          Steps <span aria-hidden="true" className="text-red-500">*</span>
+          {t('form.stepsLabel')} <span aria-hidden="true" className="text-red-500">*</span>
         </span>
         <div className="space-y-2">
           {steps.map((step, idx) => (
@@ -345,7 +348,7 @@ export default function RecipeForm({
             onClick={addStep}
             className="text-sm text-brand-600 hover:text-brand-700 font-medium"
           >
-            + Add step
+            {t('form.addStep')}
           </button>
         </div>
       </div>
@@ -357,7 +360,7 @@ export default function RecipeForm({
           disabled={isSubmitting}
           className="rounded-lg bg-brand-500 px-5 py-2 text-sm font-semibold text-white hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          {isSubmitting ? 'Saving…' : submitLabel}
+          {isSubmitting ? t('form.saving') : (submitLabel ?? t('form.save'))}
         </button>
         {onCancel && (
           <button
@@ -365,7 +368,7 @@ export default function RecipeForm({
             onClick={onCancel}
             className="rounded-lg border border-gray-300 px-5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
           >
-            Cancel
+            {t('form.cancel')}
           </button>
         )}
       </div>

@@ -3,11 +3,14 @@
 import { clsx } from 'clsx'
 import type { Tag } from '@/src/types'
 import { useRecipes } from '@/src/context/RecipeContext'
+import { useTranslations } from 'next-intl'
 
 const ALL_TAGS: Tag[] = ['breakfast', 'lunch', 'dinner', 'healthy', 'vegan', 'vegetarian']
 
 export default function RecipeFilters() {
   const { state, dispatch } = useRecipes()
+  const t = useTranslations('recipes')
+  const tTag = useTranslations('recipes.tags')
 
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
@@ -20,11 +23,11 @@ export default function RecipeFilters() {
         </span>
         <input
           type="search"
-          placeholder="Search recipes…"
+          placeholder={t('search.placeholder')}
           value={state.searchQuery}
           onChange={(e) => dispatch({ type: 'SET_SEARCH', payload: e.target.value })}
           className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-9 pr-3 text-sm text-gray-900 placeholder-gray-400 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-          aria-label="Search recipes"
+          aria-label={t('search.ariaLabel')}
         />
       </div>
 
@@ -44,7 +47,7 @@ export default function RecipeFilters() {
               )}
               aria-pressed={active}
             >
-              {tag}
+              {tTag(tag as Parameters<typeof tTag>[0])}
             </button>
           )
         })}
@@ -53,8 +56,9 @@ export default function RecipeFilters() {
           <button
             onClick={() => dispatch({ type: 'CLEAR_FILTERS' })}
             className="rounded-full px-3 py-1 text-xs font-medium text-gray-500 hover:text-gray-700 underline"
+            aria-label={t('filter.ariaLabel')}
           >
-            Clear
+            {t('filter.clear')}
           </button>
         )}
       </div>

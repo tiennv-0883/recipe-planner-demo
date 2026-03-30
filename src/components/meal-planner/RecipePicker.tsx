@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import type { Recipe, DayOfWeek, MealType } from '@/src/types'
 
 interface RecipePickerProps {
@@ -12,6 +13,7 @@ interface RecipePickerProps {
 }
 
 export default function RecipePicker({ recipes, day, mealType, onSelect, onClose }: RecipePickerProps) {
+  const t = useTranslations('recipes')
   const [query, setQuery] = useState('')
 
   const filtered = useMemo(() => {
@@ -36,7 +38,7 @@ export default function RecipePicker({ recipes, day, mealType, onSelect, onClose
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-gray-100">
           <div>
-            <h2 className="text-base font-semibold text-gray-900">Choose a recipe</h2>
+            <h2 className="text-base font-semibold text-gray-900">{t('picker.chooseRecipe')}</h2>
             <p className="text-xs text-gray-500 mt-0.5 capitalize">
               {day} · {mealType}
             </p>
@@ -44,7 +46,7 @@ export default function RecipePicker({ recipes, day, mealType, onSelect, onClose
           <button
             onClick={onClose}
             className="rounded-full p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
-            aria-label="Close"
+            aria-label={t('picker.closeAriaLabel')}
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -58,17 +60,17 @@ export default function RecipePicker({ recipes, day, mealType, onSelect, onClose
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search recipes…"
+            placeholder={t('picker.searchAriaLabel')}
             className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
             autoFocus
-            aria-label="Search recipes"
+            aria-label={t('picker.searchAriaLabel')}
           />
         </div>
 
         {/* List */}
         <div className="flex-1 overflow-y-auto p-2">
           {filtered.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-8">No recipes found</p>
+            <p className="text-sm text-gray-400 text-center py-8">{t('picker.noFound')}</p>
           ) : (
             <ul className="space-y-1">
               {filtered.map((recipe) => (
@@ -83,7 +85,7 @@ export default function RecipePicker({ recipes, day, mealType, onSelect, onClose
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 truncate">{recipe.title}</p>
                       <p className="text-xs text-gray-400 mt-0.5">
-                        {recipe.cookTimeMinutes} min · {recipe.servings} servings
+                        {recipe.cookTimeMinutes} min · {t('picker.servings', { n: recipe.servings })}
                       </p>
                     </div>
                     <div className="flex flex-wrap gap-1 shrink-0 max-w-[120px]">

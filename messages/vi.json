@@ -1,0 +1,217 @@
+{
+  "auth": {
+    "layout": {
+      "tagline": "Lên kế hoạch bữa ăn, đơn giản hóa tuần của bạn"
+    },
+    "login": {
+      "title": "Đăng nhập vào tài khoản",
+      "emailLabel": "Email",
+      "passwordLabel": "Mật khẩu",
+      "submit": "Đăng nhập",
+      "submitting": "Đang đăng nhập…",
+      "noAccount": "Chưa có tài khoản?",
+      "signUp": "Đăng ký",
+      "placeholder": {
+        "email": "ban@example.com"
+      },
+      "error": {
+        "required": "Vui lòng nhập email và mật khẩu.",
+        "failed": "Đăng nhập thất bại. Vui lòng thử lại."
+      }
+    },
+    "signup": {
+      "title": "Tạo tài khoản",
+      "passwordHint": "tối thiểu 8 ký tự",
+      "submit": "Tạo tài khoản",
+      "submitting": "Đang tạo tài khoản…",
+      "hasAccount": "Đã có tài khoản?",
+      "signIn": "Đăng nhập",
+      "error": {
+        "emailRequired": "Vui lòng nhập email.",
+        "emailInvalid": "Email không hợp lệ.",
+        "passwordTooShort": "Mật khẩu phải có ít nhất 8 ký tự.",
+        "failed": "Đăng ký thất bại. Vui lòng thử lại."
+      }
+    }
+  },
+  "nav": {
+    "dashboard": "Trang chủ",
+    "recipes": "Công thức",
+    "mealPlanner": "Kế hoạch bữa ăn",
+    "groceryList": "Danh sách mua sắm",
+    "signOut": "Đăng xuất",
+    "brand": "Recipe Planner",
+    "language": {
+      "vi": "Tiếng Việt",
+      "en": "English"
+    }
+  },
+  "dashboard": {
+    "title": "Tổng quan",
+    "subtitle": "Chào mừng trở lại! Đây là tổng quan tuần của bạn.",
+    "stats": {
+      "totalRecipes": "Tổng công thức",
+      "mealsPlanned": "Bữa ăn đã lên kế hoạch",
+      "groceryItemsLeft": "Nguyên liệu còn lại"
+    },
+    "weekAtAGlance": {
+      "title": "Tuần này",
+      "manage": "Quản lý",
+      "mealsPlanned": "{count} bữa đã lên kế hoạch",
+      "slotsEmpty": "{count} ô trống",
+      "noMeals": "Chưa có bữa ăn",
+      "emptyWeek": "Chưa có bữa ăn nào được lên kế hoạch cho tuần này",
+      "planMeals": "Lên kế hoạch"
+    },
+    "recentRecipes": {
+      "title": "Công thức gần đây",
+      "viewAll": "Xem tất cả",
+      "empty": "Chưa có công thức nào."
+    }
+  },
+  "recipes": {
+    "title": "Công thức của tôi",
+    "tags": {
+      "breakfast": "Bữa sáng",
+      "lunch": "Bữa trưa",
+      "dinner": "Bữa tối",
+      "healthy": "Lành mạnh",
+      "vegan": "Thuần chay",
+      "vegetarian": "Chay"
+    },
+    "inYourCollection": "trong bộ sưu tập",
+    "found": "kết quả",
+    "newRecipe": "Thêm công thức",
+    "empty": {
+      "noFilters": "Chưa có công thức nào. Hãy thêm công thức đầu tiên!",
+      "withFilters": "Không tìm thấy công thức phù hợp."
+    },
+    "search": {
+      "placeholder": "Tìm kiếm tên hoặc nguyên liệu…",
+      "ariaLabel": "Tìm kiếm công thức theo tên hoặc nguyên liệu"
+    },
+    "filter": {
+      "clear": "Xóa bộ lọc",
+      "ariaLabel": "Lọc theo thẻ"
+    },
+    "detail": {
+      "notFound": "Không tìm thấy công thức",
+      "notFoundSub": "Công thức này có thể đã bị xóa hoặc không tồn tại.",
+      "backToRecipes": "Quay lại công thức",
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa",
+      "ingredients": "Nguyên liệu",
+      "instructions": "Hướng dẫn",
+      "servings": "{n} khẩu phần",
+      "min": "{n} phút"
+    },
+    "form": {
+      "titleLabel": "Tên công thức",
+      "titlePlaceholder": "vd. Phở bò",
+      "cookTimeLabel": "Thời gian nấu (phút)",
+      "servingsLabel": "Số khẩu phần",
+      "tagsLabel": "Thẻ",
+      "ingredientsLabel": "Nguyên liệu",
+      "stepsLabel": "Các bước",
+      "photoLabel": "Ảnh",
+      "photoHint": "Tuỳ chọn · JPEG hoặc PNG, tối đa 5 MB",
+      "namePlaceholder": "Tên nguyên liệu",
+      "qtyPlaceholder": "Số lượng",
+      "unitPlaceholder": "Đơn vị",
+      "addIngredient": "+ Thêm nguyên liệu",
+      "addStep": "+ Thêm bước",
+      "clickToUpload": "Nhấp để tải ảnh lên",
+      "saving": "Đang lưu…",
+      "cancel": "Hủy",
+      "errors": {
+        "titleRequired": "Vui lòng nhập tên công thức.",
+        "cookTimeInvalid": "Thời gian nấu phải là số dương.",
+        "servingsInvalid": "Số khẩu phần phải là số dương.",
+        "tagsRequired": "Vui lòng chọn ít nhất một thẻ.",
+        "ingredientsRequired": "Vui lòng điền đầy đủ thông tin nguyên liệu.",
+        "stepsRequired": "Vui lòng điền mô tả cho tất cả các bước."
+      }
+    },
+    "picker": {
+      "chooseRecipe": "Chọn công thức",
+      "noFound": "Không tìm thấy công thức",
+      "servings": "{n} khẩu phần",
+      "searchAriaLabel": "Tìm kiếm công thức",
+      "closeAriaLabel": "Đóng"
+    }
+  },
+  "mealPlanner": {
+    "title": "Kế hoạch bữa ăn",
+    "subtitle": "{filled}/{total} ô đã điền",
+    "clearWeek": "Xóa tuần",
+    "clearConfirm": "Xóa tất cả bữa ăn trong tuần này?",
+    "empty": {
+      "title": "Chưa có bữa ăn nào",
+      "subtitle": "Nhấp vào ô bất kỳ trong bảng để thêm công thức."
+    },
+    "days": {
+      "mon": "Thứ 2",
+      "tue": "Thứ 3",
+      "wed": "Thứ 4",
+      "thu": "Thứ 5",
+      "fri": "Thứ 6",
+      "sat": "Thứ 7",
+      "sun": "Chủ nhật"
+    },
+    "meals": {
+      "breakfast": "Sáng",
+      "lunch": "Trưa",
+      "dinner": "Tối"
+    },
+    "weekNav": {
+      "thisWeek": "Tuần này"
+    },
+    "addRecipe": "+ Thêm"
+  },
+  "groceryList": {
+    "title": "Danh sách mua sắm",
+    "remaining": "{n} mặt hàng còn lại",
+    "remainingOne": "1 mặt hàng còn lại",
+    "generate": "Tạo danh sách",
+    "regenerate": "Tạo lại",
+    "planMealsFirst": "Hãy lên kế hoạch bữa ăn trước để tạo danh sách mua sắm",
+    "empty": {
+      "noMeals": {
+        "title": "Chưa có danh sách mua sắm",
+        "subtitle": "Lên kế hoạch bữa ăn cho tuần để tự động tạo danh sách mua sắm.",
+        "goToPlanner": "Đi đến Kế hoạch bữa ăn"
+      },
+      "noItems": "Danh sách mua sắm của bạn trống"
+    },
+    "addManual": {
+      "trigger": "Thêm mặt hàng",
+      "title": "Thêm thủ công",
+      "itemName": "Tên mặt hàng",
+      "qty": "Số lượng",
+      "unit": "Đơn vị",
+      "add": "Thêm",
+      "cancel": "Hủy",
+      "errors": {
+        "required": "Vui lòng điền đầy đủ thông tin.",
+        "qtyInvalid": "Số lượng phải là số dương."
+      }
+    }
+  },
+  "categories": {
+    "vegetables_fruits": "Rau củ & trái cây",
+    "meat_fish": "Thịt & cá",
+    "dairy_eggs": "Sữa & trứng",
+    "grains_bread": "Ngũ cốc & bánh mì",
+    "spices_seasonings": "Gia vị",
+    "other": "Khác"
+  },
+  "notFound": {
+    "title": "Không tìm thấy trang",
+    "description": "Trang hoặc công thức bạn tìm kiếm không tồn tại hoặc đã bị xóa.",
+    "goHome": "Về trang chủ",
+    "browseRecipes": "Xem công thức"
+  },
+  "common": {
+    "skipToContent": "Chuyển đến nội dung chính"
+  }
+}
