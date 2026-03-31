@@ -98,7 +98,8 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
   const apiDispatch = useCallback(async (action: CatalogAction) => {
     switch (action.type) {
       case 'ADD_ENTRY': {
-        const { id: _id, userId: _uid, createdAt: _ca, updatedAt: _ua, ...body } = action.payload
+        const { name, price, unit, storeName, storeType, sellerPhone, notes } = action.payload
+        const body = { name, price, unit, storeName, storeType, sellerPhone, notes }
         const res = await fetch('/api/catalog', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -114,7 +115,8 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
         return
       }
       case 'UPDATE_ENTRY': {
-        const { id, userId: _uid, createdAt: _ca, updatedAt: _ua, ...body } = action.payload
+        const { id, name, price, unit, storeName, storeType, sellerPhone, notes } = action.payload
+        const body = { name, price, unit, storeName, storeType, sellerPhone, notes }
         const res = await fetch(`/api/catalog/${id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
