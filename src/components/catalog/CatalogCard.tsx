@@ -77,7 +77,7 @@ export default function CatalogCard({ entry, onEdit, onDelete }: CatalogCardProp
           <>
             <button
               onClick={() => onEdit(entry)}
-              className="rounded-md p-1.5 text-gray-400 hover:text-brand-500 hover:bg-brand-50 transition-colors"
+              className="rounded-md p-1.5 text-gray-400 hover:text-brand-500 hover:bg-brand-50 transition-colors min-h-[44px] px-3"
               aria-label={`Edit ${entry.name}`}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -86,7 +86,7 @@ export default function CatalogCard({ entry, onEdit, onDelete }: CatalogCardProp
             </button>
             <button
               onClick={() => setConfirming(true)}
-              className="rounded-md p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+              className="rounded-md p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors min-h-[44px] px-3"
               aria-label={`Delete ${entry.name}`}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

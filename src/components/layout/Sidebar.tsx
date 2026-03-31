@@ -66,7 +66,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className="fixed inset-y-0 left-0 z-30 flex w-60 flex-col bg-white border-r border-gray-200"
+      className="hidden sm:flex fixed inset-y-0 left-0 z-30 w-60 flex-col bg-white border-r border-gray-200"
       aria-label="Main navigation"
     >
       {/* Logo / Brand */}

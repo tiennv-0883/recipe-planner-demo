@@ -26,7 +26,7 @@ export default function WeekNavigator({ isoWeek, onPrev, onNext, onToday }: Week
       <div className="flex items-center gap-2">
         <button
           onClick={onPrev}
-          className="rounded-lg border border-gray-300 p-2 text-gray-600 hover:bg-gray-100 transition-colors"
+          className="rounded-lg border border-gray-300 p-3 text-gray-600 hover:bg-gray-100 transition-colors"
           aria-label="Previous week"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -43,7 +43,7 @@ export default function WeekNavigator({ isoWeek, onPrev, onNext, onToday }: Week
 
         <button
           onClick={onNext}
-          className="rounded-lg border border-gray-300 p-2 text-gray-600 hover:bg-gray-100 transition-colors"
+          className="rounded-lg border border-gray-300 p-3 text-gray-600 hover:bg-gray-100 transition-colors"
           aria-label="Next week"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

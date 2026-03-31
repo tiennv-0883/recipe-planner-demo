@@ -11,7 +11,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
           <h1 className="text-3xl font-bold text-brand-600">🍽️ {tNav('brand')}</h1>
           <p className="text-gray-500 mt-1 text-sm">{tAuth('layout.tagline')}</p>
         </div>
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
           {children}
         </div>
       </div>

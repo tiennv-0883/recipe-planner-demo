@@ -66,7 +66,7 @@ export default function GroceryCategory({
               <label
                 htmlFor={`item-${item.id}`}
                 className={clsx(
-                  'flex-1 cursor-pointer',
+                  'flex-1 cursor-pointer min-h-[44px] flex items-center',
                   item.checked ? 'text-gray-400' : 'text-gray-800',
                 )}
               >
@@ -83,7 +83,7 @@ export default function GroceryCategory({
               {item.isManual && onRemove && (
                 <button
                   onClick={() => onRemove(item.id)}
-                  className="ml-1 text-gray-300 hover:text-red-400 transition-colors"
+                  className="ml-1 p-2.5 -m-2.5 text-gray-300 hover:text-red-400 transition-colors"
                   aria-label={`Remove ${item.name}`}
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

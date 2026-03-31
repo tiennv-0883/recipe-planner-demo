@@ -52,7 +52,7 @@ export default function RecipeDetail({ recipe, onDelete }: RecipeDetailProps) {
       )}
 
       {/* Header */}
-      <div className="flex items-start justify-between gap-4 mb-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between mb-4">
         <h1 className="text-2xl font-bold text-gray-900">{recipe.title}</h1>
         <div className="flex items-center gap-2 shrink-0">
           <Link

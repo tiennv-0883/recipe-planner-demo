@@ -9,6 +9,8 @@ Auto-generated from all feature plans. Last updated: 2026-03-17
 - `NEXT_LOCALE` HTTP cookie (1-year maxAge, path `/`, sameSite `lax`) — no DB changes (006-multi-language)
 - TypeScript 5 + Next.js 15.2.2 (App Router) + @supabase/supabase-js 2.x, @supabase/ssr, next-intl 4.8.3, Tailwind CSS 3 (007-ingredient-catalog)
 - Supabase Postgres — bảng mới `catalog_entries` với RLS `auth.uid() = user_id` (007-ingredient-catalog)
+- TypeScript 5.x · React 18 · Next.js 14 (App Router) + Tailwind CSS v3 · next-intl 3.x · clsx · Playwright (e2e) (009-responsive-mobile-ui)
+- N/A (layout-only; no schema changes) (009-responsive-mobile-ui)
 
 - TypeScript 5.x / Node.js 20.x (Vercel runtime) (002-supabase-migration)
 - Supabase PostgreSQL (hosted, free tier) (002-supabase-migration)
@@ -36,8 +38,8 @@ npm test && npm run lint
 TypeScript 5.x / Node.js 20: Follow standard conventions
 
 ## Recent Changes
+- 009-responsive-mobile-ui: Added TypeScript 5.x · React 18 · Next.js 14 (App Router) + Tailwind CSS v3 · next-intl 3.x · clsx · Playwright (e2e)
 - 007-ingredient-catalog: Added TypeScript 5 + Next.js 15.2.2 (App Router) + @supabase/supabase-js 2.x, @supabase/ssr, next-intl 4.8.3, Tailwind CSS 3
-- 006-multi-language: Added TypeScript 5 / Node.js 20 / Next.js 15.2.2 (App Router) + `next-intl` (to install); existing Supabase, Tailwind CSS v4, React 19
 - 006-multi-language: Added TypeScript 5 / Node.js 20 / Next.js 15.2.2 (App Router) + `next-intl` (to install); existing Supabase, Tailwind CSS v4, React 19
 
 

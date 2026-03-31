@@ -50,7 +50,7 @@ export default function AddManualItemForm({ onAdd }: AddManualItemFormProps) {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-700"
+        className="flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-700 min-h-[44px]"
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />

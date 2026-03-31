@@ -12,6 +12,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Recipe Planner',
   description: 'Plan your weekly meals and generate grocery lists',
+  viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
 }
 
 export default async function RootLayout({
